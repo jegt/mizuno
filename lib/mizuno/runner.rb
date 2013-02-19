@@ -77,6 +77,7 @@ module Mizuno
         # Launch Jetty, optionally as a daemon.
         #
         def Runner.start!
+
             # Default rackup is in config.ru
             config = (Choice.rest.first or "config.ru")
 

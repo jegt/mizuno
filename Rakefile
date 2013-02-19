@@ -25,6 +25,7 @@ namespace :jetty do
         metadata_url = File.join(url, 'maven-metadata.xml')
         metadata = Nokogiri::XML(open(metadata_url))
         release = metadata.at_xpath('//release').content
+        release = "8.1.9.v20130131"
         puts "Latest Jetty release is #{release}"
 
         # Download the latest version to our tmpdir.

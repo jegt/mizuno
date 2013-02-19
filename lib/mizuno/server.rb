@@ -6,12 +6,13 @@ require 'rack/rewindable_input'
 require 'mizuno'
 Mizuno.require_jars(%w(jetty-continuation jetty-http jetty-io jetty-jmx
     jetty-security jetty-server jetty-util servlet-api
-    rewindable-input-stream))
+    rewindable-input-stream jetty-websocket))
 require 'mizuno/version'
 require 'mizuno/rack/chunked'
 require 'mizuno/rack_handler'
 require 'mizuno/logger'
 require 'mizuno/reloader'
+require 'mizuno/web_socket_handler'
 
 module Mizuno
     class Server
@@ -94,8 +95,11 @@ module Mizuno
             rack_handler = RackHandler.new(self)
             rack_handler.rackup(app)
 
+            web_socket_handler = WebSocketHandler.new(self)
+            web_socket_handler.set_handler(rack_handler)
+
             # Add the context to the server and start.
-            @server.set_handler(rack_handler)
+            @server.set_handler(web_socket_handler)
             @server.start
             $stderr.printf("%s listening on %s:%s\n", version,
                 connector.host, connector.port) unless options[:quiet]
