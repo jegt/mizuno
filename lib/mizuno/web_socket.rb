@@ -38,5 +38,9 @@ module Mizuno
           @connection.sendMessage(data)
         end
 
+        def open?
+          @connection.isOpen()
+        end
+
     end
 end
