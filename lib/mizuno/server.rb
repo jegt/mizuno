@@ -95,11 +95,17 @@ module Mizuno
             rack_handler = RackHandler.new(self)
             rack_handler.rackup(app)
 
-            web_socket_handler = WebSocketHandler.new(self)
-            web_socket_handler.set_handler(rack_handler)
+            # Optionally enable websocket support
+            if(options[:websocket])
+              web_socket_handler = WebSocketHandler.new(self)
+              web_socket_handler.set_handler(rack_handler)
+              handler = web_socket_handler
+            else
+              handler = rack_handler
+            end
 
             # Add the context to the server and start.
-            @server.set_handler(web_socket_handler)
+            @server.set_handler(handler)
             @server.start
             $stderr.printf("%s listening on %s:%s\n", version,
                 connector.host, connector.port) unless options[:quiet]

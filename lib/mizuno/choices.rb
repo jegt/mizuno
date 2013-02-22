@@ -152,6 +152,12 @@ Choice.options do
         default Dir.pwd
     end
 
+    option :websocket do
+        long '--websocket'
+        desc 'enable websocket support'
+        default false
+    end
+
     separator ''
     separator 'Common options: '
 
